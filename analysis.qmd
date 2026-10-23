@@ -1,0 +1,36 @@
+---
+title: "Analyzing School District Reading Scores"
+author: "fork"
+format: html
+execute:
+  echo: false
+---
+
+```{r}
+#| message: false
+library(tidyverse)
+library(DBI)
+library(duckdb)
+library(dbplyr)
+```
+
+```{r}
+ggplot(score_change, aes(x = rla_change, fill = rla_change > 0)) +
+  geom_histogram(bins = 40, color = "white") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  scale_fill_manual(
+    values = c("FALSE" = "tomato", "TRUE" = "steelblue"),
+    labels = c("Decline", "Improvement"),
+    name = "Score change"
+  ) +
+  labs(
+    title = "Changes in District Reading Scores, 2015–2023",
+    subtitle = paste("Reading score changes across",
+                     format(nrow(score_change), big.mark = ","),
+                     "districts"),
+    x = "Change in reading score (grade levels)",
+    y = "Number of districts",
+    caption = "Source: Stanford Education Data Archive (SEDA)"
+  ) +
+  theme_minimal()
+```
